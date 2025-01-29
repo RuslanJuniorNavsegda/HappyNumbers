@@ -6,21 +6,26 @@ const checkButton = $("#check-button");
 
 function updateExample() {
   const newExample = $(`
-          <div class="example-row">
-            <div>${N} × ${currentNumber} = <input type="number" class="answer-input" data-number="${currentNumber}"></div>
-          </div>
-        `);
+                <div class="example-row">
+                    <div>${N} × ${currentNumber} = 
+                        <input type="number" 
+                               class="answer-input" 
+                               data-number="${currentNumber}">
+                    </div>
+                </div>
+            `);
+
   examplesDiv.append(newExample);
+  setTimeout(() => {
+    newExample.css("opacity", 1);
+  }, 10);
+
   $(".answer-input").last().focus();
 
   $(".answer-input").on("input", function () {
-    checkButton
-      .prop("disabled", false)
-      .removeClass("right wrong")
-      .addClass("active");
+    const isValid = !!this.value && !isNaN(this.value);
+    checkButton.prop("disabled", !isValid).toggleClass("active", isValid);
   });
-
-  checkButton.prop("disabled", true).removeClass("active right wrong");
 }
 
 function addBlocks() {
@@ -32,7 +37,10 @@ function addBlocks() {
   blocksContainer.append(blockRow);
 
   setTimeout(() => {
-    blockRow.find(".block").addClass("show");
+    blockRow.css({
+      opacity: 1,
+      transform: "translateY(0)",
+    });
   }, 10);
 }
 
@@ -41,12 +49,10 @@ function checkAnswer() {
   const userValue = parseInt(answerInput.val(), 10);
   const correctValue = N * currentNumber;
 
-  checkButton.removeClass("active");
-
   if (userValue === correctValue) {
-    answerInput.replaceWith(correctValue);
-    addBlocks();
+    answerInput.replaceWith(`<span>${correctValue}</span>`);
     checkButton.addClass("right");
+    addBlocks();
 
     setTimeout(() => {
       checkButton.removeClass("right");

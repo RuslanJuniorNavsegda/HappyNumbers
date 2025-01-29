@@ -14,49 +14,48 @@ body {
   justify-content: space-between;
   width: 100%;
   max-width: 1200px;
-  margin-top: auto;
+  margin-top: 20px;
 }
 
 .examples {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 10px;
+  gap: 20px;
   font-size: 1.5rem;
   padding-left: 20px;
+  width: 50%;
 }
 
 .example-row {
   display: flex;
   align-items: center;
   gap: 30px;
+  opacity: 0;
+  animation: fadeIn 0.5s forwards;
 }
 
 .blocks-container {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
   padding-right: 20px;
   align-items: flex-end;
+  width: 50%;
 }
 
 .block-row {
   display: flex;
   gap: 5px;
+  opacity: 0;
+  transform: translateY(50px);
+  animation: blockAppear 0.5s forwards;
 }
 
 .block {
   width: 30px;
   height: 30px;
   background-color: lightgreen;
-  opacity: 0;
-  transform: translateY(50px);
-  transition: opacity 0.5s, transform 0.5s;
-}
-
-.block.show {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .input-container {
@@ -81,6 +80,7 @@ input {
 input.wrong {
   border-color: red;
   color: red;
+  animation: shake 0.5s;
 }
 
 .button {
@@ -109,4 +109,37 @@ input.wrong {
 .button.active {
   cursor: pointer;
   background-color: #afeeee;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes blockAppear {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-10px);
+  }
+  75% {
+    transform: translateX(10px);
+  }
 }
