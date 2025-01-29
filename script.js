@@ -1,37 +1,36 @@
-const N = 4; // Число для умножения
+const N = 4;
 let currentNumber = 1;
 const examplesDiv = $("#examples");
 const blocksContainer = $("#blocks-container");
-const userInput = $("#user-answer");
 const checkButton = $("#check-button");
 
 function updateExample() {
   const newExample = $(`
-        <div class="example-row">
-          <div>${N} × ${currentNumber} = <input type="number" class="answer-input" data-number="${currentNumber}"></div>
-          <div class="block-row" id="blocks-${currentNumber}"></div>
-        </div>
-      `);
+          <div class="example-row">
+            <div>${N} × ${currentNumber} = <input type="number" class="answer-input" data-number="${currentNumber}"></div>
+          </div>
+        `);
   examplesDiv.append(newExample);
-  $(".answer-input").last().focus(); // Автофокус на новый инпут
+  $(".answer-input").last().focus();
 
   $(".answer-input").on("input", function () {
-    checkButton.prop("disabled", false).addClass("active");
+    checkButton
+      .prop("disabled", false)
+      .removeClass("right wrong")
+      .addClass("active");
   });
 
-  userInput.val("");
-  checkButton.prop("disabled", true).removeClass("active");
+  checkButton.prop("disabled", true).removeClass("active right wrong");
 }
 
 function addBlocks() {
-  const blockRow = $(`#blocks-${currentNumber}`);
+  const blockRow = $('<div class="block-row"></div>');
   for (let i = 0; i < 4; i++) {
-    // Всегда добавляем 4 блока
     const block = $('<div class="block"></div>');
     blockRow.append(block);
   }
+  blocksContainer.append(blockRow);
 
-  // Через 10ms запускаем анимацию всех одновременно
   setTimeout(() => {
     blockRow.find(".block").addClass("show");
   }, 10);
@@ -42,6 +41,8 @@ function checkAnswer() {
   const userValue = parseInt(answerInput.val(), 10);
   const correctValue = N * currentNumber;
 
+  checkButton.removeClass("active");
+
   if (userValue === correctValue) {
     answerInput.replaceWith(correctValue);
     addBlocks();
@@ -51,7 +52,7 @@ function checkAnswer() {
       checkButton.removeClass("right");
       currentNumber++;
       updateExample();
-    }, 500);
+    }, 1000);
   } else {
     answerInput.addClass("wrong");
     checkButton.addClass("wrong");
