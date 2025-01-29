@@ -33,7 +33,6 @@
         gap: 10px;
         font-size: 1.5rem;
         padding-left: 20px;
-        margin-right: auto;
       }
 
       .example-row {
@@ -53,15 +52,12 @@
       .block-row {
         display: flex;
         gap: 5px;
-        justify-content: flex-end;
-        width: 100%;
       }
 
       .block {
-        width: 20px;
-        height: 20px;
+        width: 30px;
+        height: 30px;
         background-color: lightgreen;
-        border: 1px solid #228b22;
         opacity: 0;
         transform: translateY(50px);
         transition: opacity 0.5s, transform 0.5s;
@@ -135,20 +131,18 @@
       <button class="button" id="check-button" disabled>Проверить</button>
     </div>
     <script>
-      const N = 4; // Число для умножения
+      const N = 4;
       let currentNumber = 1;
       const examplesDiv = $("#examples");
       const blocksContainer = $("#blocks-container");
-      const userInput = $("#user-answer");
       const checkButton = $("#check-button");
 
       function updateExample() {
         const newExample = $(`
-        <div class="example-row">
-          <div>${N} × ${currentNumber} = <input type="number" class="answer-input" data-number="${currentNumber}"></div>
-          <div class="block-row" id="blocks-${currentNumber}"></div>
-        </div>
-      `);
+          <div class="example-row">
+            <div>${N} × ${currentNumber} = <input type="number" class="answer-input" data-number="${currentNumber}"></div>
+          </div>
+        `);
         examplesDiv.append(newExample);
         $(".answer-input").last().focus();
 
@@ -156,16 +150,16 @@
           checkButton.prop("disabled", false).addClass("active");
         });
 
-        userInput.val("");
         checkButton.prop("disabled", true).removeClass("active");
       }
 
       function addBlocks() {
-        const blockRow = $(`#blocks-${currentNumber}`);
+        const blockRow = $('<div class="block-row"></div>');
         for (let i = 0; i < 4; i++) {
           const block = $('<div class="block"></div>');
           blockRow.append(block);
         }
+        blocksContainer.append(blockRow);
 
         setTimeout(() => {
           blockRow.find(".block").addClass("show");
